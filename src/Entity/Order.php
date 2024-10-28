@@ -115,7 +115,6 @@ class Order
     public function removeOrderitem(OrderItem $orderitem): static
     {
         if ($this->orderitem->removeElement($orderitem)) {
-            // set the owning side to null (unless already changed)
             if ($orderitem->getOrder1() === $this) {
                 $orderitem->setOrder1(null);
             }

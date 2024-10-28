@@ -6,13 +6,15 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
@@ -25,20 +27,14 @@ class User
     private ?string $lastName = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $roles = null;
+    private ?array $roles = [];
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type:'string')]
     private ?string $password = null;
 
-    /**
-     * @var Collection<int, Adress>
-     */
     #[ORM\OneToMany(targetEntity: Adress::class, mappedBy: 'user')]
     private Collection $adresses;
 
-    /**
-     * @var Collection<int, Order>
-     */
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $order1;
 
@@ -93,16 +89,26 @@ class User
         return $this;
     }
 
-    public function getRoles(): ?string
+    public function getRoles(): array
     {
         return $this->roles;
     }
 
-    public function setRoles(string $roles): static
+    public function setRoles(array $roles): static
     {
-        $this->roles = $roles;
+        $this->roles = ($roles);
 
         return $this;
+    }
+
+      /**
+     * The public representation of the user (e.g. a username, an email address, etc.)
+     *
+     * @see UserInterface
+     */
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
     }
 
     public function getPassword(): ?string
@@ -138,7 +144,7 @@ class User
     public function removeAdress(Adress $adress): static
     {
         if ($this->adresses->removeElement($adress)) {
-            // set the owning side to null (unless already changed)
+           
             if ($adress->getUser() === $this) {
                 $adress->setUser(null);
             }
@@ -180,7 +186,7 @@ class User
     public function removeOrder1(Order $order1): static
     {
         if ($this->order1->removeElement($order1)) {
-            // set the owning side to null (unless already changed)
+         
             if ($order1->getUser() === $this) {
                 $order1->setUser(null);
             }
@@ -188,6 +194,13 @@ class User
 
         return $this;
     }
-
+     /**
+     * @see UserInterface
+     */
+    public function eraseCredentials(): void
+    {
+        // If you store any temporary, sensitive data on the user, clear it here
+        // $this->plainPassword = null;
+    }
    
 }
