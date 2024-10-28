@@ -2,7 +2,7 @@
 
 namespace App\Entity;
 
-use App\Enum\Status;
+use App\Enum\Order1; // Import de l'énumération Order1
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -23,16 +23,13 @@ class Order
     #[ORM\Column(length: 255)]
     private ?string $createAT = null;
 
-    #[ORM\Column(enumType: Status::class)]
-    private ?Status $status = null;
+    #[ORM\Column(enumType: Order1::class)] 
+    private ?Order1 $status = null; 
 
     #[ORM\ManyToOne(inversedBy: 'order1')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    /**
-     * @var Collection<int, OrderItem>
-     */
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'order1')]
     private Collection $orderitem;
 
@@ -70,12 +67,12 @@ class Order
         return $this;
     }
 
-    public function getStatus(): ?Status
+    public function getStatus(): ?Order1 
     {
         return $this->status;
     }
 
-    public function setStatus(Status $status): static
+    public function setStatus(Order1 $status): static 
     {
         $this->status = $status;
 
@@ -94,9 +91,7 @@ class Order
         return $this;
     }
 
-    /**
-     * @return Collection<int, OrderItem>
-     */
+    
     public function getOrderitem(): Collection
     {
         return $this->orderitem;
@@ -122,6 +117,4 @@ class Order
 
         return $this;
     }
-
-
 }

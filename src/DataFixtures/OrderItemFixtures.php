@@ -1,9 +1,8 @@
-<?php 
+<?php
 
 namespace App\DataFixtures;
 
 use App\Entity\OrderItem;
-use App\Entity\Order;
 use App\Entity\Product;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -13,6 +12,7 @@ class OrderItemFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
+        // Récupérer les références d'ordre et de produit
         $order1 = $this->getReference('order_1'); 
         $order2 = $this->getReference('order_2'); 
         $product1 = $this->getReference('product_1'); 
@@ -32,19 +32,14 @@ class OrderItemFixtures extends Fixture implements DependentFixtureInterface
                 'quantity' => 1,
                 'unitPrice' => $product3->getPrice(), 
             ],
-            // Assurez-vous que order3 et product6 existent
-            // 'order' => $order3,
-            // 'product' => $product6,
-            // 'quantity' => 1, 
-            // 'unitPrice' => $product6->getPrice(), 
         ];
 
         foreach ($orderItemsData as $data) {
             $orderItem = new OrderItem();
-            $orderItem->setOrder($data['order']);
+            $orderItem->setOrder1($data['order']); // Utilisation de setOrder1 au lieu de setOrder
             $orderItem->setProduct($data['product']);
             $orderItem->setQuantity($data['quantity']);
-            $orderItem->setUnitPrice($data['unitPrice']);
+            $orderItem->setProductPrice($data['unitPrice']); // Assurez-vous que cette méthode s'appelle setProductPrice
 
             $manager->persist($orderItem);
         }

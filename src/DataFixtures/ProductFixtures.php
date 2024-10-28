@@ -19,6 +19,7 @@ class ProductFixtures extends Fixture
                 'stock' => 150,
                 'status' => Status::dispo,
                 'category_reference' => 'category1', 
+                'reference_key' => 'product_1', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Tracteur Porsche',
@@ -27,6 +28,7 @@ class ProductFixtures extends Fixture
                 'stock' => 5,
                 'status' => Status::precommande,
                 'category_reference' => 'category2', 
+                'reference_key' => 'product_2', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Aliment pour poules 25kg Blé',
@@ -35,6 +37,7 @@ class ProductFixtures extends Fixture
                 'stock' => 300,
                 'status' => Status::precommande,
                 'category_reference' => 'category3',
+                'reference_key' => 'product_3', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Aliment pour poules 25kg Maïs',
@@ -43,6 +46,7 @@ class ProductFixtures extends Fixture
                 'stock' => 300,
                 'status' => Status::precommande,
                 'category_reference' => 'category3',
+                'reference_key' => 'product_4', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Couveuse automatique 60 oeufs Cimuka CT60SH',
@@ -51,6 +55,7 @@ class ProductFixtures extends Fixture
                 'stock' => 20,
                 'status' => Status::precommande,
                 'category_reference' => 'category4', 
+                'reference_key' => 'product_5', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Chèvre alpine',
@@ -59,6 +64,7 @@ class ProductFixtures extends Fixture
                 'stock' => 0,
                 'status' => Status::rupture,
                 'category_reference' => 'category1', 
+                'reference_key' => 'product_6', // Ajout d'une clé de référence
             ],
             [
                 'name' => 'Clôture électrique',
@@ -67,6 +73,7 @@ class ProductFixtures extends Fixture
                 'stock' => 50,
                 'status' => Status::dispo,
                 'category_reference' => 'category4', 
+                'reference_key' => 'product_7', // Ajout d'une clé de référence
             ],
         ];
 
@@ -80,6 +87,9 @@ class ProductFixtures extends Fixture
 
             $categoryReference = $this->getReference($data['category_reference']);
             $product->setCategory($categoryReference);
+
+            // Ajout de la référence pour chaque produit
+            $this->addReference($data['reference_key'], $product);
 
             $manager->persist($product);
         }

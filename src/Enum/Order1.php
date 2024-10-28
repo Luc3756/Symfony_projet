@@ -1,7 +1,7 @@
 <?php
 namespace App\Enum;
 
-enum Order: string
+enum Order1: string
 {
     case  preparation = "En_préparation";
     case  expediee = "expédiée";
