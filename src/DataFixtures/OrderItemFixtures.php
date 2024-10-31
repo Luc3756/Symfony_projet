@@ -12,7 +12,6 @@ class OrderItemFixtures extends Fixture implements DependentFixtureInterface
 {
     public function load(ObjectManager $manager): void
     {
-        // Récupérer les références d'ordre et de produit
         $order1 = $this->getReference('order_1'); 
         $order2 = $this->getReference('order_2'); 
         $product1 = $this->getReference('product_1'); 
@@ -36,10 +35,10 @@ class OrderItemFixtures extends Fixture implements DependentFixtureInterface
 
         foreach ($orderItemsData as $data) {
             $orderItem = new OrderItem();
-            $orderItem->setOrder1($data['order']); // Utilisation de setOrder1 au lieu de setOrder
+            $orderItem->setOrder1($data['order']); 
             $orderItem->setProduct($data['product']);
             $orderItem->setQuantity($data['quantity']);
-            $orderItem->setProductPrice($data['unitPrice']); // Assurez-vous que cette méthode s'appelle setProductPrice
+            $orderItem->setProductPrice($data['unitPrice']); 
 
             $manager->persist($orderItem);
         }

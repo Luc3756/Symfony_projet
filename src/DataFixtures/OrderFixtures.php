@@ -22,21 +22,21 @@ class OrderFixtures extends Fixture
                 'createAT' => '2023-10-01 14:00',
                 'status' => Order1::preparation,
                 'user' => $user1, 
-                'reference_key' => 'order_1', // Ajoutez cette ligne
+                'reference_key' => 'order_1',
             ],
             [
                 'reference' => 'ORD002',
                 'createAT' => '2023-10-05 11:30',
                 'status' => Order1::expediee,
                 'user' => $user2, 
-                'reference_key' => 'order_2', // Ajoutez cette ligne
+                'reference_key' => 'order_2', 
             ],
             [
                 'reference' => 'ORD003',
                 'createAT' => '2023-10-07 09:00',
                 'status' => Order1::annule,
                 'user' => $user3,
-                'reference_key' => 'order_3', // Ajoutez cette ligne
+                'reference_key' => 'order_3', 
             ],
         ];
 

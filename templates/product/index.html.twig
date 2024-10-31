@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Produits{% endblock %}
+
+{% block body %}
+    <h1>Liste des Produits</h1>
+    <ul>
+        {% for product in products %}
+            <li>
+                <h2>{{ product.name }}</h2>
+                
+                {# Affichage de toutes les images du produit #}
+                {% if product.image is not empty %}
+                    <div>
+                        {% for image in product.image %}
+                            <img src="{{ asset('image/' ~ image.url) }}" alt="Image de {{ product.name }}" style="max-width: 200px; margin-right: 10px;">
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <p>Aucune image disponible</p>
+                {% endif %}
+                
+                <p>{{ product.description }}</p>
+                <p>Prix : {{ product.price }} €</p>
+                <p>Stock : {{ product.stock }} unités</p>
+                <p>Statut : {{ product.status.toString() }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+
