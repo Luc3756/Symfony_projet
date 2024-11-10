@@ -4,28 +4,34 @@
 
 {% block body %}
     <h1>Liste des Produits</h1>
-    <ul>
-        {% for product in products %}
-            <li>
-                <h2>{{ product.name }}</h2>
-                
-                {# Affichage de toutes les images du produit #}
-                {% if product.image is not empty %}
-                    <div>
-                        {% for image in product.image %}
-                            <img src="{{ asset('image/' ~ image.url) }}" alt="Image de {{ product.name }}" style="max-width: 200px; margin-right: 10px;">
-                        {% endfor %}
+    <div class="container">
+        <div class="row">
+            {% for product in pagination %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            {% if product.image is not empty %}
+                                <div class="product-images mb-2">
+                                    {% for image in product.image %}
+                                        <img src="{{ asset('image/' ~ image.url) }}" alt="Image de {{ product.name }}" class="img-fluid" style="max-width: 100%; height: auto;">
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p>Aucune image disponible</p>
+                            {% endif %}
+                            
+                            <p class="card-text">{{ product.description }}</p>
+                            <p class="card-text">Prix : {{ product.price }} €</p>
+                            <p class="card-text">Stock : {{ product.stock }} unités</p>
+                            <p class="card-text">Statut : {{ product.status.toString() }}</p>
+                        </div>
                     </div>
-                {% else %}
-                    <p>Aucune image disponible</p>
-                {% endif %}
-                
-                <p>{{ product.description }}</p>
-                <p>Prix : {{ product.price }} €</p>
-                <p>Stock : {{ product.stock }} unités</p>
-                <p>Statut : {{ product.status.toString() }}</p>
-            </li>
-        {% endfor %}
-    </ul>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="pagination">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </div>
 {% endblock %}
-

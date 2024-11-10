@@ -12,7 +12,6 @@ class ProductController extends AbstractController
     #[Route('/products', name: 'product_list')]
     public function list(EntityManagerInterface $entityManager): Response
     {
-        // Récupération de tous les produits
         $products = $entityManager->getRepository(Product::class)->findAll();
 
         return $this->render('product/index.html.twig', [
@@ -23,7 +22,6 @@ class ProductController extends AbstractController
     #[Route('/products/{id}', name: 'product_detail')]
     public function detail(EntityManagerInterface $entityManager, int $id): Response
     {
-        // Récupération du produit par ID
         $product = $entityManager->getRepository(Product::class)->find($id);
 
         if (!$product) {

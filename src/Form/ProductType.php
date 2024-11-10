@@ -10,6 +10,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\NumberType;
+use Symfony\Component\Validator\Constraints as Assert;
 
 class ProductType extends AbstractType
 {
@@ -17,7 +19,17 @@ class ProductType extends AbstractType
     {
         $builder
             ->add('name')
-            ->add('price')
+            ->add('price', NumberType::class, [
+                'constraints' => [
+                    new Assert\GreaterThan([
+                        'value' => 0,
+                        'message' => 'Le prix doit être supérieur à zéro.',
+                    ]),
+                ],
+                'attr' => [
+                    'min' => 0,     
+                ],
+            ])
             ->add('description')
             ->add('stock')
             ->add('status', ChoiceType::class, [
