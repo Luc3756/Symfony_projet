@@ -33,6 +33,8 @@ final class AdminProductController extends AbstractController
             $entityManager->persist($product);
             $entityManager->flush();
 
+            $this->addFlash('success', 'Le produit a été ajouté avec succès.');
+
             return $this->redirectToRoute('app_admin_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -71,11 +73,21 @@ final class AdminProductController extends AbstractController
     #[Route('/{id}', name: 'app_admin_product_delete', methods: ['POST'])]
     public function delete(Request $request, Product $product, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$product->getId(), $request->getPayload()->getString('_token'))) {
-            $entityManager->remove($product);
-            $entityManager->flush();
+        if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
+            if ($product->getOrderitem()->isEmpty()) {
+    
+                $images = $product->getImage(); 
+    
+                foreach ($images as $image) {
+                    $entityManager->remove($image);
+                }
+                $entityManager->remove($product);
+                $entityManager->flush();  
+            } else {
+                $this->addFlash('error', 'Le produit ne peut pas être supprimé car il fait partie d\'une commande.');
+                return $this->redirectToRoute('app_admin_product_index');
+            }
         }
-
         return $this->redirectToRoute('app_admin_product_index', [], Response::HTTP_SEE_OTHER);
     }
 }

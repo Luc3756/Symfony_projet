@@ -3,19 +3,28 @@ namespace App\Controller;
 
 use App\Entity\Product;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface; // Importer le paginator
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
     #[Route('/products', name: 'product_list')]
-    public function list(EntityManagerInterface $entityManager): Response
+    public function list(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
     {
-        $products = $entityManager->getRepository(Product::class)->findAll();
+        
+        $queryBuilder = $entityManager->getRepository(Product::class)->createQueryBuilder('p');
+
+        $pagination = $paginator->paginate(
+            $queryBuilder,        
+            $request->query->getInt('page', 1), 
+            10                      
+        );
 
         return $this->render('product/index.html.twig', [
-            'products' => $products,
+            'pagination' => $pagination, 
         ]);
     }
 
@@ -33,3 +42,4 @@ class ProductController extends AbstractController
         ]);
     }
 }
+
