@@ -1,0 +1,39 @@
+<h1>Les 5 dernières commandes</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
+            <tr>
+                <td>{{ order.reference }}</td>
+                <td>{{ order.createAT }}</td>
+                <td>{{ order.status.toString() }}</td> 
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<h1>Nombre total de produits par catégorie</h1>
+
+<table>
+    <thead>
+        <tr>
+            <th>Catégorie</th>
+            <th>Nombre de produits</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in productCounts %}
+            <tr>
+                <td>{{ category.categoryName }}</td>
+                <td>{{ category.productCount }}</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
