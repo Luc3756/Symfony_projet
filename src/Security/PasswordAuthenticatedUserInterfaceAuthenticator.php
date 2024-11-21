@@ -35,7 +35,8 @@ class PasswordAuthenticatedUserInterfaceAuthenticator extends AbstractLoginFormA
             new UserBadge($email),
             new PasswordCredentials($request->getPayload()->getString('password')),
             [
-                new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),            ]
+                new CsrfTokenBadge('authenticate', $request->getPayload()->getString('_csrf_token')),
+            ]
         );
     }
 
@@ -45,8 +46,10 @@ class PasswordAuthenticatedUserInterfaceAuthenticator extends AbstractLoginFormA
             return new RedirectResponse($targetPath);
         }
 
-        // For example:
-        // return new RedirectResponse($this->urlGenerator->generate('some_route'));
+        if (in_array('ROLE_ADMIN', $token->getRoleNames(), true)) {
+            return new RedirectResponse($this->urlGenerator->generate('dashboard'));
+        }
+
         return new RedirectResponse($this->urlGenerator->generate('home'));
     }
 
