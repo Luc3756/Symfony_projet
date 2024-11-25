@@ -1,70 +1,40 @@
-{% extends 'base.html.twig' %}
+<h1>Les 5 dernières commandes</h1>
 
-{% block body %}
-    <h1>Les 5 dernières commandes</h1>
-
-    <table>
-        <thead>
+<table>
+    <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Date</th>
+            <th>Statut</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in orders %}
             <tr>
-                <th>Référence</th>
-                <th>Date</th>
-                <th>Statut</th>
+                <td>{{ order.reference }}</td>
+                <td>{{ order.createAT }}</td>
+                <td>{{ order.status.toString() }}</td> 
             </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                <tr>
-                    <td>{{ order.reference }}</td>
-                    <td>{{ order.createAT|date('d/m/Y H:i') }}</td>
-                    <td>{{ order.status.toString() }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+    </tbody>
+</table>
 
-    <h1>Nombre total de produits par catégorie</h1>
+<h1>Nombre total de produits par catégorie</h1>
 
-    <table>
-        <thead>
+<table>
+    <thead>
+        <tr>
+            <th>Catégorie</th>
+            <th>Nombre de produits</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for category in productCounts %}
             <tr>
-                <th>Catégorie</th>
-                <th>Nombre de produits</th>
+                <td>{{ category.categoryName }}</td>
+                <td>{{ category.productCount }}</td>
             </tr>
-        </thead>
-        <tbody>
-            {% for category in productCounts %}
-                <tr>
-                    <td>{{ category.categoryName }}</td>
-                    <td>{{ category.productCount }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        {% endfor %}
+    </tbody>
+</table>
 
-    <h1>Montant total des ventes par mois (12 derniers mois)</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Mois</th>
-                <th>Année</th>
-                <th>Total des ventes (€)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if salesByMonth is empty %}
-                <tr>
-                    <td colspan="3">Aucune donnée de vente disponible.</td>
-                </tr>
-            {% else %}
-                {% for sale in salesByMonth %}
-                    <tr>
-                        <td>{{ sale.month|date('F') }}</td>
-                        <td>{{ sale.year }}</td>
-                        <td>{{ sale.totalSales|number_format(2, ',', ' ') }}</td>
-                    </tr>
-                {% endfor %}
-            {% endif %}
-        </tbody>
-    </table>
-{% endblock %}
