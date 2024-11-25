@@ -15,8 +15,8 @@
             {% for order in orders %}
                 <tr>
                     <td>{{ order.reference }}</td>
-                    <td>{{ order.createAT }}</td>
-                    <td>{{ order.status.toString() }}</td> 
+                    <td>{{ order.createAT|date('Y-m-d') }}</td> <!-- Format de la date -->
+                    <td>{{ order.status.toString() }}</td>
                 </tr>
             {% endfor %}
         </tbody>
@@ -63,6 +63,27 @@
                 <td>Précommande</td>
                 <td>{{ productStatusPercentages['Précommande'] }}%</td>
             </tr>
+        </tbody>
+    </table>
+
+    <h1>Montant total des ventes réalisées par mois</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Année</th>
+                <th>Mois</th>
+                <th>Ventes totales (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for sale in salesByMonth %}
+                <tr>
+                    <td>{{ sale.year }}</td>
+                    <td>{{ sale.month }}</td>
+                    <td>{{ sale.totalSales|number_format(2, '.', ',') }} €</td> <!-- Format du montant -->
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
 {% endblock %}

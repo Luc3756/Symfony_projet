@@ -22,16 +22,20 @@ class DashboardController extends AbstractController
     #[Route('/admin/dashboard', name: 'dashboard')]
     public function index(): Response
     {
+
         $orders = $this->orderRepository->findBy([], ['id' => 'DESC'], 5);
 
         $productCounts = $this->productRepository->getTotalProductsByCategory();
 
         $productStatusPercentages = $this->productRepository->getProductStatusPercentages();
 
+        $salesByMonth = $this->orderRepository->getSalesByMonth();
+        
         return $this->render('dashboard/index.html.twig', [
             'orders' => $orders,  
             'productCounts' => $productCounts,  
             'productStatusPercentages' => $productStatusPercentages,
+            'salesByMonth' => $salesByMonth,  
         ]);
     }
 }
