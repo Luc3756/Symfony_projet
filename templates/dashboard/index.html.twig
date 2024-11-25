@@ -15,7 +15,7 @@
             {% for order in orders %}
                 <tr>
                     <td>{{ order.reference }}</td>
-                    <td>{{ order.createAT }}</td>
+                    <td>{{ order.createAT|date('d/m/Y H:i') }}</td>
                     <td>{{ order.status.toString() }}</td>
                 </tr>
             {% endfor %}
@@ -38,6 +38,33 @@
                     <td>{{ category.productCount }}</td>
                 </tr>
             {% endfor %}
+        </tbody>
+    </table>
+
+    <h1>Montant total des ventes par mois (12 derniers mois)</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Mois</th>
+                <th>Année</th>
+                <th>Total des ventes (€)</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if salesByMonth is empty %}
+                <tr>
+                    <td colspan="3">Aucune donnée de vente disponible.</td>
+                </tr>
+            {% else %}
+                {% for sale in salesByMonth %}
+                    <tr>
+                        <td>{{ sale.month|date('F') }}</td>
+                        <td>{{ sale.year }}</td>
+                        <td>{{ sale.totalSales|number_format(2, ',', ' ') }}</td>
+                    </tr>
+                {% endfor %}
+            {% endif %}
         </tbody>
     </table>
 {% endblock %}

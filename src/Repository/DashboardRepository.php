@@ -4,7 +4,6 @@ namespace App\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-
 class DashboardRepository extends EntityRepository
 {
     public function getLastFiveOrders()
@@ -20,7 +19,6 @@ class DashboardRepository extends EntityRepository
 
     public function getProductAvailabilityRatio()
     {
-
         return $this->createQueryBuilder('p')
             ->select('p.stock, COUNT(p.id) AS productCount')
             ->where('p.stock > 0') 
@@ -60,5 +58,18 @@ class DashboardRepository extends EntityRepository
             ->getResult();  
     }
 
-    
+    // Renommée pour satisfaire la convention de nommage
+    public function findSalesByMonthLast12Months()
+    {
+        return $this->createQueryBuilder('oi')
+            ->select('MONTH(o.createAT) AS month', 'YEAR(o.createAT) AS year', 'SUM(oi.productPrice * oi.quantity) AS totalSales')
+            ->join('oi.order1', 'o') 
+            ->where('o.createAT >= :startDate')
+            ->setParameter('startDate', new \DateTime('-12 months'))
+            ->groupBy('year', 'month') 
+            ->orderBy('year', 'DESC')
+            ->addOrderBy('month', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
