@@ -26,9 +26,12 @@ class DashboardController extends AbstractController
 
         $productCounts = $this->productRepository->getTotalProductsByCategory();
 
+        $productStatusPercentages = $this->productRepository->getProductStatusPercentages();
+
         return $this->render('dashboard/index.html.twig', [
             'orders' => $orders,  
             'productCounts' => $productCounts,  
+            'productStatusPercentages' => $productStatusPercentages,
         ]);
     }
 }
