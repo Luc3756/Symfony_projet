@@ -25,6 +25,14 @@
                             <p class="card-text">Prix : {{ product.price }} €</p>
                             <p class="card-text">Stock : {{ product.stock }} unités</p>
                             <p class="card-text">Statut : {{ product.status.toString() }}</p>
+
+                            {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                                {% if product.stock > 0 %}
+                                    <a href="{{ path('cart_add', {'id': product.id}) }}" class="btn btn-primary">Ajouter au panier</a>
+                                {% else %}
+                                    <button class="btn btn-secondary" disabled>Indisponible</button>
+                                {% endif %}
+                            {% endif %}
                         </div>
                     </div>
                 </div>

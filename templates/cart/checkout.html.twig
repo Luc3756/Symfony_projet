@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Validation de la commande{% endblock %}
+
+{% block body %}
+    <h1>Validation de la commande</h1>
+
+    <div class="container">
+        <h3>Référence de la commande : {{ form.reference.vars.data }}</h3>
+        <h3>Date de création : {{ form.createAT.vars.data }}</h3>
+        
+        <p><strong>Statut de la commande : </strong>{{ orderStatus }}</p>
+
+        {{ form_start(form) }}
+            <div>
+                {{ form_widget(form) }}
+            </div>
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

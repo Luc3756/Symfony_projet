@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon Panier{% endblock %}
+
+{% block body %}
+    <h1>Mon Panier</h1>
+    
+    <div class="container">
+        {% if data is empty %}
+            <p>Votre panier est vide.</p>
+        {% else %}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Produit</th>
+                        <th>Prix Unitaire</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Action</th> 
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set grandTotal = 0 %}
+                    {% for item in data %}
+                        <tr>
+                            <td>{{ item.product.name }}</td>
+                            <td>{{ item.product.price }} €</td>
+                            <td>{{ item.quantity }}</td>
+                            <td>{{ item.product.price * item.quantity }} €</td>
+                            <td>
+                                <form action="{{ path('cart_remove', {'id': item.product.id}) }}" method="POST" style="display: inline;">
+                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% set grandTotal = grandTotal + (item.product.price * item.quantity) %}
+                    {% endfor %}
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td colspan="3"><strong>Total à payer :</strong></td>
+                        <td><strong>{{ grandTotal }} €</strong></td>
+                    </tr>
+                </tfoot>
+            </table>
+
+            <a href="{{ path('cart_checkout') }}" class="btn btn-primary">Valider ma commande</a>
+        {% endif %}
+    </div>
+{% endblock %}
