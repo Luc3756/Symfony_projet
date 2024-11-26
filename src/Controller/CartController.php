@@ -76,35 +76,43 @@ class CartController extends AbstractController
     public function checkout(Request $request, SessionInterface $session, ProductRepository $productRepository, EntityManagerInterface $entityManager)
     {
         $panier = $session->get('panier', []);
+        
         if (empty($panier)) {
             $this->addFlash('error', 'Votre panier est vide.');
             return $this->redirectToRoute('cart_index');
         }
     
+        // Créer une nouvelle commande
         $order = new Order();
         $order->setReference(uniqid('ORD'));
         $order->setCreateAT((new \DateTime())->format('Y-m-d'));
-
-        $order->setStatus(Order1::preparation);  
-        $orderStatus = $order->getStatus()->toString(); 
-    
-        $order->setUser($this->getUser()); 
+        $order->setStatus(Order1::preparation); // Statut de la commande
+        $order->setUser($this->getUser());
     
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
- 
+    
         if ($form->isSubmitted() && $form->isValid()) {
-
+            // Parcourir le panier et créer les éléments de commande
             foreach ($panier as $productId => $quantity) {
                 $product = $productRepository->find($productId);
                 if ($product) {
+                    if ($product->getStock() < $quantity) {
+                        $this->addFlash('error', 'Stock insuffisant pour ' . $product->getName());
+                        return $this->redirectToRoute('cart_index');
+                    }
+    
                     $orderItem = new OrderItem();
                     $orderItem->setProduct($product);
                     $orderItem->setQuantity($quantity);
                     $orderItem->setProductPrice($product->getPrice());
                     $orderItem->setOrder1($order);
-
+    
+                    // Mettre à jour le stock
+                    $product->setStock($product->getStock() - $quantity);
+    
                     $entityManager->persist($orderItem);
+                    $entityManager->persist($product);
                 }
             }
     
@@ -117,11 +125,15 @@ class CartController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
     
+        // Passer la chaîne de caractères de l'état de la commande à la vue
+        $orderStatus = $order->getStatus()->toString();
+    
         return $this->render('cart/checkout.html.twig', [
             'form' => $form->createView(),
-            'orderStatus' => $orderStatus, 
+            'orderStatus' => $orderStatus,  // Ajouter la variable ici
         ]);
     }
+    
 
     #[Route('/clear', name: 'clear')]
     public function clear(SessionInterface $session)
