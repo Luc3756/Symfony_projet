@@ -1,0 +1,73 @@
+<div{{ attributes }}>
+    <div class="container">
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <input 
+                    type="text" 
+                    name="q" 
+                    class="form-control" 
+                    data-model="search" 
+                    placeholder="Rechercher un produit">
+            </div>
+        </div>
+
+        <div id="product-list" data-turbo-frame="product-list">
+            <div class="row">
+                {% if this.products is not empty %}
+                    {% for product in this.products %}
+                        <div class="col-md-4 mb-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+
+                                    {% if product.image is not empty %}
+                                        <div class="product-images mb-2">
+                                            {% for image in product.image %}
+                                                <img 
+                                                    src="{{ asset('image/' ~ image.url) }}" 
+                                                    alt="Image de {{ product.name }}" 
+                                                    class="img-fluid"
+                                                    style="max-width: 100%; height: auto;">
+                                            {% endfor %}
+                                        </div>
+                                    {% else %}
+                                        <p class="text-muted">Aucune image disponible</p>
+                                    {% endif %}
+
+                                    <p class="card-text">{{ product.description }}</p>
+                                    <p class="card-text">
+                                        <strong>Prix :</strong> {{ product.price }} €
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Stock :</strong> {{ product.stock }} unités
+                                    </p>
+                                    <p class="card-text">
+                                        <strong>Statut :</strong> {{ product.status.toString() }}
+                                    </p>
+
+                                    {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                                        {% if product.stock > 0 %}
+                                            <a 
+                                                href="{{ path('cart_add', {'id': product.id}) }}" 
+                                                class="btn btn-primary">
+                                                Ajouter au panier
+                                            </a>
+                                        {% else %}
+                                            <button class="btn btn-secondary" disabled>
+                                                Indisponible
+                                            </button>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                {% else %}
+                    <div class="col-12">
+                        <p class="text-center text-muted">Aucun produit trouvé.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

@@ -28,36 +28,6 @@ class ProductController extends AbstractController
         ]);
     }
 
-    #[Route('/products/search', name: 'product_search', methods: ['GET'])]
-    public function search(Request $request, EntityManagerInterface $entityManager, PaginatorInterface $paginator): Response
-    {
-        $searchQuery = $request->query->get('q', '');
-
-        $queryBuilder = $entityManager->getRepository(Product::class)->createQueryBuilder('p');
-
-        if ($searchQuery) {
-            $queryBuilder
-                ->where('p.name LIKE :searchQuery')
-                ->setParameter('searchQuery', '%' . $searchQuery . '%');
-        }
-
-        $pagination = $paginator->paginate(
-            $queryBuilder,        
-            $request->query->getInt('page', 1), 
-            10                       
-        );
-
-        if ($request->isXmlHttpRequest()) {
-            return $this->render('product/_product_list.html.twig', [
-                'pagination' => $pagination, 
-            ]);
-        }
-
-        return $this->render('product/index.html.twig', [
-            'pagination' => $pagination, 
-        ]);
-    }
-
     #[Route('/products/{id}', name: 'product_detail')]
     public function detail(EntityManagerInterface $entityManager, int $id): Response
     {

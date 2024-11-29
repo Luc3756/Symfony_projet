@@ -24,6 +24,22 @@ class ProductRepository extends ServiceEntityRepository
             ->getResult();  
     }
 
+    public function getAll()
+    {
+        return $this->createQueryBuilder('p')
+            ->getQuery()
+            ->getResult();
+    }    
+
+    public function findByName(string $name)
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.name LIKE :name')
+        ->setParameter('name', '%' . $name . '%')
+        ->getQuery()
+        ->getResult();
+}
+
     public function getProductStatusPercentages()
     {
 
