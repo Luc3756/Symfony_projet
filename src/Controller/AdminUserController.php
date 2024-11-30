@@ -10,15 +10,32 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 
 #[Route('/admin/user')]
 final class AdminUserController extends AbstractController
 {
     #[Route(name: 'app_admin_user_index', methods: ['GET'])]
-    public function index(UserRepository $userRepository): Response
+    public function index(UserRepository $userRepository, Request $request): Response
     {
+        $page = (int) $request->query->get('page', 1); 
+        $limit = 5; 
+
+        $offset = ($page - 1) * $limit;
+
+        $query = $userRepository->createQueryBuilder('u')
+            ->setFirstResult($offset)
+            ->setMaxResults($limit)
+            ->getQuery();
+
+        $paginator = new Paginator($query);
+        $totalUsers = count($paginator); 
+
         return $this->render('admin_user/index.html.twig', [
-            'users' => $userRepository->findAll(),
+            'users' => $paginator,
+            'totalUsers' => $totalUsers,
+            'currentPage' => $page,
+            'totalPages' => ceil($totalUsers / $limit),
         ]);
     }
 

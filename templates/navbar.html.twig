@@ -1,40 +1,49 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="{{ path('home') }}">Orwell</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
-        <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('home') }}">Accueil <span class="sr-only"></span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('app_login') }}">Login <span class="sr-only"></span></a>
-            </li>
-            <li class="nav-item active">
-                <a class="nav-link" href="{{ path('product_list') }}">Produits <span class="sr-only"></span></a>
-            </li>
-            {% if is_granted('ROLE_ADMIN') %}
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('app_admin_product_index') }}">Gestion Produit<span class="sr-only"></span></a>
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container-fluid">
+
+        <a class="navbar-brand fw-bold text-primary" href="{{ path('home') }}">Orwell</a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link {{ app.request.attributes.get('_route') == 'home' ? 'active' : '' }}" href="{{ path('home') }}">Accueil</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('app_admin_user_index') }}">Gestion Admin<span class="sr-only"></span></a>
+                <li class="nav-item">
+                    <a class="nav-link {{ app.request.attributes.get('_route') == 'app_login' ? 'active' : '' }}" href="{{ path('app_login') }}">Login</a>
                 </li>
-                <li class="nav-item active">
-                    <a class="nav-link" href="{{ path('dashboard') }}">Dashboard<span class="sr-only"></span></a>
+                <li class="nav-item">
+                    <a class="nav-link {{ app.request.attributes.get('_route') == 'product_list' ? 'active' : '' }}" href="{{ path('product_list') }}">Produits</a>
                 </li>
-            {% endif %}
-        </ul>
-        <ul class="navbar-nav ml-auto">
-            {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
-                <li class="nav-item active">
-                    <a href="{{ path('cart_index') }}" class="nav-link">Accéder au panier</a>
-                </li>
-                <li class="nav-item active">
-                    <a href="{{ path('credit_card_index') }}" class="nav-link">Carte de crédit</a>
-                </li>
-            {% endif %}
-        </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_admin_product_index' ? 'active' : '' }}" href="{{ path('app_admin_product_index') }}">Gestion Produit</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'app_admin_user_index' ? 'active' : '' }}" href="{{ path('app_admin_user_index') }}">Gestion Admin</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'dashboard' ? 'active' : '' }}" href="{{ path('dashboard') }}">Dashboard</a>
+                    </li>
+                {% endif %}
+            </ul>
+
+            <ul class="navbar-nav ms-auto">
+                {% if is_granted('ROLE_USER') or is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'cart_index' ? 'active' : '' }}" href="{{ path('cart_index') }}">Panier</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ app.request.attributes.get('_route') == 'credit_card_index' ? 'active' : '' }}" href="{{ path('credit_card_index') }}">Carte de crédit</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
     </div>
 </nav>

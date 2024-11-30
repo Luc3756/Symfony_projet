@@ -4,31 +4,35 @@
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
-        {% block stylesheets %}
+        {% block stylesheets %}
         {% endblock %}
-
-        {% block javascripts %}
+        {% block javascripts %}
             {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
         <link href="{{ asset('styles/bootstrap.min.css') }}" rel="stylesheet">
-
     </head>
     <body>
-    {% include 'navbar.html.twig' %}
-        
-{# Message flash #}
-{% for message in app.flashes('error') %}
-    <div class="alert alert-danger">
-        {{ message }}
-    </div>
-{% endfor %}
+        {% include 'navbar.html.twig' %}
 
-{% for message in app.flashes('success') %}
-    <div class="alert alert-success">
-        {{ message }}
-    </div>
-{% endfor %}
+        {% for message in app.flashes('error') %}
+        <div class="alert alert-danger">
+            {{ message }}
+        </div>
+        {% endfor %}
 
-        {% block body %}Bonjour{% endblock %}
+        {% for message in app.flashes('success') %}
+        <div class="alert alert-success">
+            {{ message }}
+        </div>
+        {% endfor %}
+
+        {% block body %}
+        <div class="container text-center mt-5">
+            <h1 class="display-3 fw-bold text-primary">Orwell : La Ferme des Animaux</h1>
+            <p class="lead text-secondary mt-3">
+                Vente de matériel et d'animaux pour entreprises et particuliers.
+            </p>
+        </div>
+        {% endblock %}
     </body>
 </html>
