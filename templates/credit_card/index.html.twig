@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes Cartes de Crédit{% endblock %}
+
+{% block body %}
+    <h1>Mes Cartes de Crédit</h1>
+
+    {% for label, messages in app.flashes %}
+        <div class="alert alert-{{ label }}">
+            {% for message in messages %}
+                <p>{{ message }}</p>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    {{ form_start(form) }}
+        <div>
+            {{ form_label(form.number) }}
+            {{ form_widget(form.number, {'attr': {'pattern': '\\d{16}', 'title': 'Le numéro de carte doit comporter entre 16 chiffres.', 'placeholder': 'Ex: 1234567891234567'}}) }}
+            {{ form_errors(form.number) }}
+        </div>
+        <div>
+    {{ form_label(form.expirationDate) }}
+    {{ form_widget(form.expirationDate, {'attr': {'pattern': '^([0]{1}[1-9]{1}|1[0-2]{1})\/[0-9]{2}$','title': 'Le format de la date d\'expiration est MM/AA, ex : 12/25.','placeholder': 'Ex : 12/25'
+        }
+    }) }}
+        </div>
+        <div>
+            {{ form_label(form.cvv) }}
+            {{ form_widget(form.cvv, {'attr': {'pattern': '\\d{3,4}', 'title': 'Le CVV doit comporter 3 ou 4 chiffres.', 'placeholder': 'Ex: 123'}}) }}
+            {{ form_errors(form.cvv) }}
+        </div>
+        {{ form_row(form.submit) }}
+    {{ form_end(form) }}
+
+    <h2>Mes Cartes de Crédit Enregistrées</h2>
+
+    {% if creditCards is not empty %}
+        <ul>
+            {% for card in creditCards %}
+                <li>
+                    <strong>Carte :</strong> {{ card.number }} (Exp : {{ card.expirationDate }}) CVV: {{ card.cvv }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>Aucune carte de crédit enregistrée.</p>
+    {% endif %}
+{% endblock %}

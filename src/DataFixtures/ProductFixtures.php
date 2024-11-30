@@ -204,7 +204,7 @@ class ProductFixtures extends Fixture
             [
                 'name' => 'Oeuf plaque de 30',
                 'price' => '12',
-                'description' => 'Oeuf de la ferme de Luc Bio. Potentiellement fécondé peut donc être mis en couveuse',
+                'description' => 'Oeuf de la ferme de Luc Bio.',
                 'stock' => 80,
                 'status' => Status::dispo,
                 'category_reference' => 'category1', 

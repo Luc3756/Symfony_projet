@@ -82,18 +82,17 @@ class CartController extends AbstractController
             return $this->redirectToRoute('cart_index');
         }
     
-        // Créer une nouvelle commande
         $order = new Order();
         $order->setReference(uniqid('ORD'));
         $order->setCreateAT((new \DateTime())->format('Y-m-d'));
-        $order->setStatus(Order1::preparation); // Statut de la commande
+        $order->setStatus(Order1::preparation); 
         $order->setUser($this->getUser());
     
         $form = $this->createForm(OrderType::class, $order);
         $form->handleRequest($request);
     
         if ($form->isSubmitted() && $form->isValid()) {
-            // Parcourir le panier et créer les éléments de commande
+  
             foreach ($panier as $productId => $quantity) {
                 $product = $productRepository->find($productId);
                 if ($product) {
@@ -107,8 +106,7 @@ class CartController extends AbstractController
                     $orderItem->setQuantity($quantity);
                     $orderItem->setProductPrice($product->getPrice());
                     $orderItem->setOrder1($order);
-    
-                    // Mettre à jour le stock
+
                     $product->setStock($product->getStock() - $quantity);
     
                     $entityManager->persist($orderItem);
@@ -124,13 +122,12 @@ class CartController extends AbstractController
             $this->addFlash('success', 'Votre commande a été validée avec succès !');
             return $this->redirectToRoute('cart_index');
         }
-    
-        // Passer la chaîne de caractères de l'état de la commande à la vue
+
         $orderStatus = $order->getStatus()->toString();
     
         return $this->render('cart/checkout.html.twig', [
             'form' => $form->createView(),
-            'orderStatus' => $orderStatus,  // Ajouter la variable ici
+            'orderStatus' => $orderStatus,  
         ]);
     }
     

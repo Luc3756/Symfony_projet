@@ -38,6 +38,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'user')]
     private Collection $order1;
 
+    /**
+     * @var Collection<int, CreditCard>
+     */
+    #[ORM\OneToMany(targetEntity: CreditCard::class, mappedBy: 'user')]
+    private Collection $creditCards;
+
 
 
 
@@ -45,6 +51,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         $this->adresses = new ArrayCollection();
         $this->order1 = new ArrayCollection();
+        $this->creditCards = new ArrayCollection();
         
     }
 
@@ -194,13 +201,38 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-     /**
-     * @see UserInterface
-     */
+  
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+    }
+
+    /**
+     * @return Collection<int, CreditCard>
+     */
+    public function getCreditCards(): Collection
+    {
+        return $this->creditCards;
+    }
+
+    public function addCreditCard(CreditCard $creditCard): static
+    {
+        if (!$this->creditCards->contains($creditCard)) {
+            $this->creditCards->add($creditCard);
+            $creditCard->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCreditCard(CreditCard $creditCard): static
+    {
+        if ($this->creditCards->removeElement($creditCard)) {
+            if ($creditCard->getUser() === $this) {
+                $creditCard->setUser(null);
+            }
+        }
+
+        return $this;
     }
    
 }

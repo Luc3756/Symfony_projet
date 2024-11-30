@@ -61,6 +61,8 @@ final class AdminProductController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            $this->addFlash('success', 'Le produit a été modifié avec succès.');
+
             return $this->redirectToRoute('app_admin_product_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -75,14 +77,16 @@ final class AdminProductController extends AbstractController
     {
         if ($this->isCsrfTokenValid('delete' . $product->getId(), $request->request->get('_token'))) {
             if ($product->getOrderitem()->isEmpty()) {
-    
+  
                 $images = $product->getImage(); 
-    
                 foreach ($images as $image) {
                     $entityManager->remove($image);
                 }
+
                 $entityManager->remove($product);
-                $entityManager->flush();  
+                $entityManager->flush();
+                
+                $this->addFlash('success', 'Le produit a été supprimé avec succès.');
             } else {
                 $this->addFlash('error', 'Le produit ne peut pas être supprimé car il fait partie d\'une commande.');
                 return $this->redirectToRoute('app_admin_product_index');
