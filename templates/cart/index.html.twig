@@ -27,7 +27,12 @@
                         <tr>
                             <td>{{ item.product.name }}</td>
                             <td>{{ item.product.price }} €</td>
-                            <td>{{ item.quantity }}</td>
+                            <td>
+                                <form action="{{ path('cart_update', {'id': item.product.id}) }}" method="POST" style="display: inline;">
+                                    <input type="number" name="quantity" value="{{ item.quantity }}" min="1" class="form-control form-control-sm" style="width: 70px;">
+                                    <button type="submit" class="btn btn-warning btn-sm mt-2">Mettre à jour</button>
+                                </form>
+                            </td>
                             <td>{{ item.product.price * item.quantity }} €</td>
                             <td>
                                 <form action="{{ path('cart_remove', {'id': item.product.id}) }}" method="POST" style="display: inline;">

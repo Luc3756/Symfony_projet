@@ -72,6 +72,24 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart_index');
     }
 
+    #[Route('/update/{id}', name: 'update')]
+    public function updateQuantity($id, Request $request, SessionInterface $session)
+    {
+        $panier = $session->get('panier', []);
+
+        $quantity = $request->request->get('quantity');
+        $quantity = max(1, (int)$quantity);  
+
+        if (isset($panier[$id])) {
+ 
+            $panier[$id] = $quantity;
+
+            $session->set('panier', $panier);
+        }
+
+        return $this->redirectToRoute('cart_index');
+    }
+    
     #[Route('/checkout', name: 'checkout')]
     public function checkout(Request $request, SessionInterface $session, ProductRepository $productRepository, EntityManagerInterface $entityManager)
     {
