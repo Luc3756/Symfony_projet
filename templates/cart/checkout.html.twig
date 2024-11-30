@@ -3,12 +3,17 @@
 {% block title %}Validation de la commande{% endblock %}
 
 {% block body %}
-    <h1>Validation de la commande</h1>
-    
-        {{ form_start(form) }}
-            <div>
-                {{ form_widget(form) }}
-            </div>
-        {{ form_end(form) }}
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: #007bff;">Validation de la commande</h1>
+
+        <div class="card p-4 shadow-sm">
+            <h3 class="text-center mb-4">Informations de commandes</h3>
+
+            {{ form_start(form) }}
+                <div class="form-group mb-3">
+                    {{ form_widget(form) }}
+                </div>
+            {{ form_end(form) }}
+        </div>
     </div>
 {% endblock %}

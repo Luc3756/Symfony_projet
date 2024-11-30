@@ -1,89 +1,101 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Les 5 dernières commandes</h1>
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: #007bff;">Tableau de bord</h1>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Référence</th>
-                <th>Date</th>
-                <th>Statut</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for order in orders %}
-                <tr>
-                    <td>{{ order.reference }}</td>
-                    <td>{{ order.createAT|date('Y-m-d') }}</td> <!-- Format de la date -->
-                    <td>{{ order.status.toString() }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <div class="row">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Les 5 Dernières Commandes</h2>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Référence</th>
+                            <th>Date</th>
+                            <th>Statut</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for order in orders %}
+                            <tr>
+                                <td>{{ order.reference }}</td>
+                                <td>{{ order.createAT|date('Y-m-d') }}</td>
+                                <td>{{ order.status.toString() }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
 
-    <h1>Nombre total de produits par catégorie</h1>
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Nombre Total de Produits par Catégorie</h2>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Catégorie</th>
+                            <th>Nombre de Produits</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for category in productCounts %}
+                            <tr>
+                                <td>{{ category.categoryName }}</td>
+                                <td>{{ category.productCount }}</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-    <table>
-        <thead>
-            <tr>
-                <th>Catégorie</th>
-                <th>Nombre de produits</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for category in productCounts %}
-                <tr>
-                    <td>{{ category.categoryName }}</td>
-                    <td>{{ category.productCount }}</td>
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+        <div class="row mt-5">
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Pourcentage des Produits par Statut</h2>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Statut</th>
+                            <th>Pourcentage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Disponible</td>
+                            <td>{{ productStatusPercentages['Disponible'] }}%</td>
+                        </tr>
+                        <tr>
+                            <td>En rupture</td>
+                            <td>{{ productStatusPercentages['En_rupture'] }}%</td>
+                        </tr>
+                        <tr>
+                            <td>Précommande</td>
+                            <td>{{ productStatusPercentages['Précommande'] }}%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
 
-    <h1>Pourcentage des produits par statut</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Statut</th>
-                <th>Pourcentage</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td>Disponible</td>
-                <td>{{ productStatusPercentages['Disponible'] }}%</td>
-            </tr>
-            <tr>
-                <td>En rupture</td>
-                <td>{{ productStatusPercentages['En_rupture'] }}%</td>
-            </tr>
-            <tr>
-                <td>Précommande</td>
-                <td>{{ productStatusPercentages['Précommande'] }}%</td>
-            </tr>
-        </tbody>
-    </table>
-
-    <h1>Montant total des ventes réalisées par mois</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Année</th>
-                <th>Mois</th>
-                <th>Ventes totales (€)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for sale in salesByMonth %}
-                <tr>
-                    <td>{{ sale.year }}</td>
-                    <td>{{ sale.month }}</td>
-                    <td>{{ sale.totalSales|number_format(2, '.', ',') }} €</td> <!-- Format du montant -->
-                </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+            <div class="col-md-6">
+                <h2 class="text-center mb-4">Montant Total des Ventes Réalisées par Mois</h2>
+                <table class="table table-striped table-bordered">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Année</th>
+                            <th>Mois</th>
+                            <th>Ventes Totales (€)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for sale in salesByMonth %}
+                            <tr>
+                                <td>{{ sale.year }}</td>
+                                <td>{{ sale.month }}</td>
+                                <td>{{ sale.totalSales|number_format(2, '.', ',') }} €</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

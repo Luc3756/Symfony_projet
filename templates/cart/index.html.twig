@@ -3,14 +3,16 @@
 {% block title %}Mon Panier{% endblock %}
 
 {% block body %}
-    <h1>Mon Panier</h1>
-    
-    <div class="container">
+    <div class="container mt-5">
+        <h1 class="text-center mb-4" style="color: #007bff;">Mon Panier</h1>
+
         {% if data is empty %}
-            <p>Votre panier est vide.</p>
+            <div class="alert alert-warning text-center">
+                Votre panier est vide.
+            </div>
         {% else %}
-            <table class="table">
-                <thead>
+            <table class="table table-striped table-bordered">
+                <thead class="thead-dark">
                     <tr>
                         <th>Produit</th>
                         <th>Prix Unitaire</th>
@@ -29,7 +31,7 @@
                             <td>{{ item.product.price * item.quantity }} €</td>
                             <td>
                                 <form action="{{ path('cart_remove', {'id': item.product.id}) }}" method="POST" style="display: inline;">
-                                    <button type="submit" class="btn btn-danger">Supprimer</button>
+                                    <button type="submit" class="btn btn-danger btn-sm">Supprimer</button>
                                 </form>
                             </td>
                         </tr>
@@ -38,13 +40,15 @@
                 </tbody>
                 <tfoot>
                     <tr>
-                        <td colspan="3"><strong>Total à payer :</strong></td>
+                        <td colspan="3" class="text-right"><strong>Total à payer :</strong></td>
                         <td><strong>{{ grandTotal }} €</strong></td>
                     </tr>
                 </tfoot>
             </table>
 
-            <a href="{{ path('cart_checkout') }}" class="btn btn-primary">Valider ma commande</a>
+            <div class="text-center mt-4">
+                <a href="{{ path('cart_checkout') }}" class="btn btn-success btn-lg">Valider ma commande</a>
+            </div>
         {% endif %}
     </div>
 {% endblock %}
