@@ -1,3 +1,16 @@
+Pour faire fonctionner le Projet: 
+
+Utiliser un serveur web local pour le php
+
+Effectuer les commandes à la racine du projet:
+
+composer install
+php bin/console doctrine:database:create
+php bin/console make:migration
+php bin/console doctrine:migrations:migrate
+php bin/console doctrine:fixtures:load
+
+
 # Symfony 7.1 Boilerplate 
 
 Attention : Il vous faut PHP 8.2 pour faire fonctionner ce projet si vous avez PHP 8.1 utiliser la branche symfony64 du repository.
