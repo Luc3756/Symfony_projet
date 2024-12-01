@@ -1,6 +1,7 @@
 <div{{ attributes }}>
     <div class="container">
         <div class="row mb-4">
+            <h1 class="text-center" style="color: #007bff;">Liste des Produits</h1>
             <div class="col-md-6">
                 <input 
                     type="text" 
@@ -10,7 +11,6 @@
                     placeholder="Rechercher un produit">
             </div>
         </div>
-
         <div id="product-list" data-turbo-frame="product-list">
             <div class="row">
                 {% if this.products is not empty %}
